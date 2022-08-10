@@ -11,6 +11,7 @@ const CoinDetailedScreen = () => {
     image: { small },
     name,
     symbol,
+    prices,
     market_data: {
       market_cap_rank,
       current_price,
@@ -57,37 +58,16 @@ const CoinDetailedScreen = () => {
       <View>
         <LineChart
           data={{
-            labels: ["January", "February", "March", "April", "May", "June"],
             datasets: [
               {
-                data: [
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                ],
+                data: prices.map((price) => price[1]),
               },
             ],
           }}
           width={Dimensions.get("window").width - 10} // from react-native
           height={320}
-          yAxisLabel="$"
-          yAxisSuffix="k"
-          yAxisInterval={1} // optional, defaults to 1
           chartConfig={{
-            decimalPlaces: 2, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            style: {
-              borderRadius: 16,
-            },
-            propsForDots: {
-              r: "6",
-              strokeWidth: "2",
-              stroke: "#ffa726",
-            },
+            color: (opacity = 1) => `rgba(0, 142, 10, ${opacity})`,
           }}
           bezier
           style={{
