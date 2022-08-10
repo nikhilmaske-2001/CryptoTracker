@@ -13,6 +13,22 @@ const CoinItem = ({ marketCoin }) => {
     market_cap,
     image,
   } = marketCoin;
+
+  const normalizeMarketCap = (marketCap) => {
+    if (marketCap > 1000000000000) {
+      return `${Math.floor(marketCap / 1000000000000)} T`;
+    }
+    if (marketCap > 1000000000) {
+      return `${Math.floor(marketCap / 1000000000)} B`;
+    }
+    if (marketCap > 1000000) {
+      return `${Math.floor(marketCap / 1000000)} M`;
+    }
+    if (marketCap > 1000) {
+      return `${Math.floor(marketCap / 1000)} K`;
+    }
+    return marketCap;
+  };
   return (
     <View style={styles.coinContainer}>
       <Image
@@ -37,9 +53,11 @@ const CoinItem = ({ marketCoin }) => {
           </Text>
         </View>
       </View>
-      <View style={{ marginLeft: "auto" }}>
+      <View style={{ marginLeft: "auto", alignItems: "flex-end" }}>
         <Text style={styles.title}>{current_price}</Text>
-        <Text style={styles.text}>MCap {market_cap}</Text>
+        <Text style={{ color: "white" }}>
+          MCap {normalizeMarketCap(market_cap)}
+        </Text>
       </View>
     </View>
   );
