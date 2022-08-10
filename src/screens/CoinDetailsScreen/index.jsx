@@ -17,7 +17,7 @@ const CoinDetailedScreen = () => {
         image={small}
         name={name}
         symbol={symbol}
-        market_cap_rank={market_cap_rank}
+        marketCapRank={market_cap_rank}
       />
     </View>
   );
