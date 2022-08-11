@@ -93,7 +93,7 @@ const CoinDetailedScreen = () => {
             ],
           }}
           width={Dimensions.get("window").width} // from react-native
-          height={400}
+          height={250}
           chartConfig={{
             color: () =>
               current_price.usd > prices[0][1] ? "#16c784" : "#ea3943",
@@ -162,6 +162,7 @@ const CoinDetailedScreen = () => {
             style={styles.input}
             value={coinValue}
             onChangeText={changeCoinValue}
+            keyboardType="numeric"
           />
         </View>
 
@@ -171,6 +172,7 @@ const CoinDetailedScreen = () => {
             style={styles.input}
             value={usdValue}
             onChangeText={changeUsdValue}
+            keyboardType="numeric"
           />
         </View>
       </View>
