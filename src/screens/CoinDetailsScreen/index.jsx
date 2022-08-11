@@ -64,14 +64,20 @@ const CoinDetailedScreen = () => {
               },
             ],
           }}
-          width={Dimensions.get("window").width - 10} // from react-native
-          height={320}
+          width={Dimensions.get("window").width} // from react-native
+          height={400}
           chartConfig={{
-            color: (opacity = 1) => `rgba(0, 142, 10, ${opacity})`,
+            color: () => `green`,
+            propsForDots: {
+              r: "0",
+            },
           }}
+          withHorizontalLabels={false}
+          withInnerLines={false}
           bezier
           style={{
             marginVertical: 8,
+            paddingRight: 0,
             borderRadius: 16,
           }}
         />
