@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Dimensions, TextInput } from "react-native";
 import Coin from "../../../assets/data/crypto.json";
 import CoinDetailHeader from "./components/CoinDetailedHeader";
@@ -7,6 +7,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { LineChart } from "react-native-chart-kit";
 import { Rect, Text as TextSVG, Svg } from "react-native-svg";
 import { useRoute } from "@react-navigation/native";
+import { getDetailedCoinData } from "../../services/requests";
 
 const CoinDetailedScreen = () => {
   const {
@@ -21,13 +22,22 @@ const CoinDetailedScreen = () => {
     },
   } = Coin;
 
-  const [coinValue, setCoinValue] = useState("1");
-  const [usdValue, setUsdValue] = useState(current_price.usd.toString());
-
   const route = useRoute();
   const {
     params: { coinId },
   } = route;
+  const [coin, setCoin] = useState();
+
+  const [coinValue, setCoinValue] = useState("1");
+  const [usdValue, setUsdValue] = useState(current_price.usd.toString());
+
+  const fetchCoinData = async () => {
+    const fetchedCoinData = await getDetailedCoinData(coinId);
+  };
+
+  useEffect(() => {
+    fetchCoinData();
+  }, []);
 
   const changeCoinValue = (value) => {
     setCoinValue(value);
