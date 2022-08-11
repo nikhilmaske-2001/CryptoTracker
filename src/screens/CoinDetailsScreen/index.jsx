@@ -80,7 +80,8 @@ const CoinDetailedScreen = () => {
           width={Dimensions.get("window").width} // from react-native
           height={400}
           chartConfig={{
-            color: () => `green`,
+            color: () =>
+              current_price.usd > prices[0][1] ? "#16c784" : "#ea3943",
             propsForDots: {
               r: "0",
             },
