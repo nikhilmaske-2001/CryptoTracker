@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const CoinItem = ({ marketCoin }) => {
   const {
+    id,
     name,
     current_price,
     market_cap_rank,
@@ -39,7 +40,7 @@ const CoinItem = ({ marketCoin }) => {
   return (
     <Pressable
       style={styles.coinContainer}
-      onPress={() => navigation.navigate("CoinDetailedScreen")}
+      onPress={() => navigation.navigate("CoinDetailedScreen", { coinId: id })}
     >
       <Image
         source={{ uri: image }}

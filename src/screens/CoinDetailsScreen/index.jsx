@@ -6,6 +6,7 @@ import styles from "./styles";
 import { AntDesign } from "@expo/vector-icons";
 import { LineChart } from "react-native-chart-kit";
 import { Rect, Text as TextSVG, Svg } from "react-native-svg";
+import { useRoute } from "@react-navigation/native";
 
 const CoinDetailedScreen = () => {
   const {
@@ -22,6 +23,11 @@ const CoinDetailedScreen = () => {
 
   const [coinValue, setCoinValue] = useState("1");
   const [usdValue, setUsdValue] = useState(current_price.usd.toString());
+
+  const route = useRoute();
+  const {
+    params: { coinId },
+  } = route;
 
   const changeCoinValue = (value) => {
     setCoinValue(value);
