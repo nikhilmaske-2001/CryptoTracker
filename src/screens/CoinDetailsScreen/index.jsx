@@ -7,7 +7,11 @@ import { AntDesign } from "@expo/vector-icons";
 import { LineChart } from "react-native-chart-kit";
 import { Rect, Text as TextSVG, Svg } from "react-native-svg";
 import { useRoute } from "@react-navigation/native";
-import { getDetailedCoinData } from "../../services/requests";
+import {
+  getCoinMarketChart,
+  getDetailedCoinData,
+} from "../../services/requests";
+import { ActivityIndicator } from "react-native-web";
 
 const CoinDetailedScreen = () => {
   const {
@@ -26,13 +30,20 @@ const CoinDetailedScreen = () => {
   const {
     params: { coinId },
   } = route;
-  const [coin, setCoin] = useState();
+  const [coin, setCoin] = useState(null);
+  const [coinMarketData, setCoinMarketData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [coinValue, setCoinValue] = useState("1");
   const [usdValue, setUsdValue] = useState(current_price.usd.toString());
 
   const fetchCoinData = async () => {
+    setLoading(true);
     const fetchedCoinData = await getDetailedCoinData(coinId);
+    const fetchedCoinMarketData = await getCoinMarketChart(coinId);
+    setCoin(fetchedCoinData);
+    setCoinMarketData(fetchedCoinMarketData);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -60,6 +71,10 @@ const CoinDetailedScreen = () => {
     visible: false,
     value: 0,
   });
+
+  if (loading || !coin || !coinMarketData) {
+    return <ActivityIndicator size="large" />;
+  }
 
   return (
     <View style={{ paddingHorizontal: 10 }}>
