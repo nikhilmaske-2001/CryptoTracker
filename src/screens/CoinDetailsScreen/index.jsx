@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Dimensions } from "react-native";
 import Coin from "../../../assets/data/crypto.json";
 import CoinDetailHeader from "./components/CoinDetailedHeader";
 import styles from "./styles";
 import { AntDesign } from "@expo/vector-icons";
 import { LineChart } from "react-native-chart-kit";
+import { Rect, Text as TextSVG, Svg } from "react-native-svg";
 
 const CoinDetailedScreen = () => {
   const {
@@ -22,6 +23,13 @@ const CoinDetailedScreen = () => {
   const percentageColor =
     price_change_percentage_24h < 0 ? "#ea3943" : "#16c784";
 
+  let [tooltipPos, setTooltipPos] = useState({
+    x: 0,
+    y: 0,
+    visible: false,
+    value: 0,
+  });
+
   return (
     <View style={{ paddingHorizontal: 10 }}>
       <CoinDetailHeader
@@ -33,7 +41,12 @@ const CoinDetailedScreen = () => {
       <View style={styles.priceContainer}>
         <View>
           <Text style={styles.name}>{name}</Text>
-          <Text style={styles.currentPrice}>${current_price.usd}</Text>
+          <Text style={styles.currentPrice}>
+            $
+            {tooltipPos.visible
+              ? tooltipPos.value.toFixed(2)
+              : current_price.usd.toFixed(2)}
+          </Text>
         </View>
         <View
           style={{
@@ -79,6 +92,50 @@ const CoinDetailedScreen = () => {
             marginVertical: 8,
             paddingRight: 0,
             borderRadius: 16,
+          }}
+          decorator={() => {
+            return tooltipPos.visible ? (
+              <View>
+                <Svg>
+                  <Rect
+                    x={tooltipPos.x - 15}
+                    y={tooltipPos.y + 10}
+                    width="40"
+                    height="30"
+                    fill="black"
+                  />
+                  <TextSVG
+                    x={tooltipPos.x + 5}
+                    y={tooltipPos.y + 30}
+                    fill="white"
+                    fontSize="16"
+                    fontWeight="bold"
+                    textAnchor="middle"
+                  >
+                    {tooltipPos.value.toFixed(2)}
+                  </TextSVG>
+                </Svg>
+              </View>
+            ) : null;
+          }}
+          onDataPointClick={(data) => {
+            let isSamePoint =
+              tooltipPos.x === data.x && tooltipPos.y === data.y;
+
+            isSamePoint
+              ? setTooltipPos((previousState) => {
+                  return {
+                    ...previousState,
+                    value: data.value,
+                    visible: !previousState.visible,
+                  };
+                })
+              : setTooltipPos({
+                  x: data.x,
+                  value: data.value,
+                  y: data.y,
+                  visible: true,
+                });
           }}
         />
       </View>
