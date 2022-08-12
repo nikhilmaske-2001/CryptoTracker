@@ -101,7 +101,7 @@ const CoinDetailedScreen = () => {
             $
             {tooltipPos.visible
               ? tooltipPos.value.toFixed(2)
-              : current_price.usd.toFixed(2)}
+              : current_price.usd}
           </Text>
         </View>
         <View
