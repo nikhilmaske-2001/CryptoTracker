@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Dimensions, TextInput } from "react-native";
-import Coin from "../../../assets/data/crypto.json";
+import {
+  View,
+  Text,
+  Dimensions,
+  TextInput,
+  ActivityIndicator,
+} from "react-native";
 import CoinDetailHeader from "./components/CoinDetailedHeader";
 import styles from "./styles";
 import { AntDesign } from "@expo/vector-icons";
@@ -11,31 +16,21 @@ import {
   getCoinMarketChart,
   getDetailedCoinData,
 } from "../../services/requests";
-import { ActivityIndicator } from "react-native-web";
 
 const CoinDetailedScreen = () => {
-  const {
-    image: { small },
-    name,
-    symbol,
-    prices,
-    market_data: {
-      market_cap_rank,
-      current_price,
-      price_change_percentage_24h,
-    },
-  } = Coin;
-
+  // State for current selected coin
+  const [coin, setCoin] = useState(null);
+  const [coinMarketData, setCoinMarketData] = useState(null);
   const route = useRoute();
   const {
     params: { coinId },
   } = route;
-  const [coin, setCoin] = useState(null);
-  const [coinMarketData, setCoinMarketData] = useState(null);
+
   const [loading, setLoading] = useState(false);
 
+  // Price converter
   const [coinValue, setCoinValue] = useState("1");
-  const [usdValue, setUsdValue] = useState(current_price.usd.toString());
+  const [usdValue, setUsdValue] = useState("");
 
   const fetchCoinData = async () => {
     setLoading(true);
@@ -49,18 +44,6 @@ const CoinDetailedScreen = () => {
   useEffect(() => {
     fetchCoinData();
   }, []);
-
-  const changeCoinValue = (value) => {
-    setCoinValue(value);
-    const floatValue = parseFloat(value) || 0;
-    setUsdValue((floatValue * current_price.usd).toString());
-  };
-
-  const changeUsdValue = (value) => {
-    setUsdValue(value);
-    const floatValue = parseFloat(value) || 0;
-    setCoinValue((floatValue / current_price.usd).toString());
-  };
 
   const percentageColor =
     price_change_percentage_24h < 0 ? "#ea3943" : "#16c784";
@@ -76,9 +59,36 @@ const CoinDetailedScreen = () => {
     return <ActivityIndicator size="large" />;
   }
 
+  const {
+    id,
+    image: { small },
+    name,
+    symbol,
+    market_data: {
+      market_cap_rank,
+      current_price,
+      price_change_percentage_24h,
+    },
+  } = coin;
+
+  const { prices } = coinMarketData;
+
+  const changeCoinValue = (value) => {
+    setCoinValue(value);
+    const floatValue = parseFloat(value) || 0;
+    setUsdValue((floatValue * current_price.usd).toString());
+  };
+
+  const changeUsdValue = (value) => {
+    setUsdValue(value);
+    const floatValue = parseFloat(value) || 0;
+    setCoinValue((floatValue / current_price.usd).toString());
+  };
+
   return (
     <View style={{ paddingHorizontal: 10 }}>
       <CoinDetailHeader
+        coinId={id}
         image={small}
         name={name}
         symbol={symbol}
