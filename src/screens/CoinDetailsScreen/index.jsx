@@ -46,9 +46,6 @@ const CoinDetailedScreen = () => {
     fetchCoinData();
   }, []);
 
-  const percentageColor =
-    price_change_percentage_24h < 0 ? "#ea3943" : "#16c784";
-
   let [tooltipPos, setTooltipPos] = useState({
     x: 0,
     y: 0,
@@ -73,6 +70,9 @@ const CoinDetailedScreen = () => {
   } = coin;
 
   const { prices } = coinMarketData;
+
+  const percentageColor =
+    price_change_percentage_24h < 0 ? "#ea3943" : "#16c784";
 
   const changeCoinValue = (value) => {
     setCoinValue(value);
@@ -107,7 +107,7 @@ const CoinDetailedScreen = () => {
         </View>
         <View
           style={{
-            backgroundColor: { percentageColor },
+            backgroundColor: percentageColor,
             paddingVertical: 8,
             paddingHorizontal: 3,
             borderRadius: 5,
