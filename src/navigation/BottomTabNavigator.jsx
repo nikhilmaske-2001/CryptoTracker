@@ -1,8 +1,9 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
-import { Entypo, FontAwesome } from "@expo/vector-icons";
+import { Entypo, Feather } from "@expo/vector-icons";
 import WatchListScreen from "../screens/WatchListScreen";
+import UserDetailsScreen from "../screens/UserDetailsScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -36,6 +37,15 @@ const BottomTabNavigator = () => {
         options={{
           tabBarIcon: ({ focused, color }) => (
             <Entypo name="star" size={focused ? 30 : 25} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="User"
+        component={UserDetailsScreen}
+        options={{
+          tabBarIcon: ({ focused, color }) => (
+            <Feather name="user" size={focused ? 30 : 25} color={color} />
           ),
         }}
       />
