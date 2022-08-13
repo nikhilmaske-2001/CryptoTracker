@@ -12,7 +12,10 @@ const HomeScreen = () => {
     if (loading) {
       return;
     }
-    setLoading(true);
+    // Removing below line to resolve issue
+    // of scrolling to top of flatlist after every
+    // list ending
+    // setLoading(true);
     const coinsData = await getMarketData(pageNumber);
     setCoins((existingCoins) => [...existingCoins, ...coinsData]);
     setLoading(false);
