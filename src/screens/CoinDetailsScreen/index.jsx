@@ -16,6 +16,7 @@ import {
   getCoinMarketChart,
   getDetailedCoinData,
 } from "../../services/requests";
+import CoinInformation from "./components/CoinInformation";
 
 const CoinDetailedScreen = () => {
   // State for current selected coin
@@ -62,6 +63,7 @@ const CoinDetailedScreen = () => {
     image: { small },
     name,
     symbol,
+    description: { en },
     market_data: {
       market_cap_rank,
       current_price,
@@ -217,6 +219,9 @@ const CoinDetailedScreen = () => {
             keyboardType="numeric"
           />
         </View>
+      </View>
+      <View>
+        <CoinInformation description={en} />
       </View>
     </View>
   );
