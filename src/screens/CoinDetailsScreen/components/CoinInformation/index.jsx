@@ -6,7 +6,7 @@ const CoinInformation = (props) => {
   return (
     <View style={{ height: 500, marginTop: 20 }}>
       <ScrollView>
-        <Text style={{ color: "white", fontSize: 20 }}>{description}</Text>
+        <Text style={{ color: "white", fontSize: 15 }}>{description}</Text>
       </ScrollView>
     </View>
   );

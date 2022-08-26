@@ -5,7 +5,9 @@ import {
   Dimensions,
   TextInput,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
+
 import CoinDetailHeader from "./components/CoinDetailedHeader";
 import styles from "./styles";
 import { AntDesign } from "@expo/vector-icons";
@@ -90,139 +92,141 @@ const CoinDetailedScreen = () => {
 
   return (
     <View style={{ paddingHorizontal: 10 }}>
-      <CoinDetailHeader
-        coinId={id}
-        image={small}
-        name={name}
-        symbol={symbol}
-        marketCapRank={market_cap_rank}
-      />
-      <View style={styles.priceContainer}>
-        <View>
-          <Text style={styles.name}>{name}</Text>
-          <Text style={styles.currentPrice}>
-            $
-            {tooltipPos.visible
-              ? tooltipPos.value.toFixed(2)
-              : current_price.usd}
-          </Text>
-        </View>
-        <View
-          style={{
-            backgroundColor: percentageColor,
-            paddingVertical: 8,
-            paddingHorizontal: 3,
-            borderRadius: 5,
-            flexDirection: "row",
-          }}
-        >
-          <AntDesign
-            name={price_change_percentage_24h < 0 ? "caretdown" : "caretup"}
-            size={12}
-            color="white"
-            style={{ alignSelf: "center", marginRight: 5 }}
-          />
-          <Text style={styles.priceChange}>
-            {price_change_percentage_24h.toFixed(2)}%
-          </Text>
-        </View>
-      </View>
-      <View>
-        <LineChart
-          data={{
-            datasets: [
-              {
-                data: prices.map((price) => price[1]),
-              },
-            ],
-          }}
-          width={Dimensions.get("window").width} // from react-native
-          height={250}
-          chartConfig={{
-            color: () =>
-              current_price.usd > prices[0][1] ? "#16c784" : "#ea3943",
-            propsForDots: {
-              r: "0",
-            },
-          }}
-          withHorizontalLabels={false}
-          withInnerLines={false}
-          bezier
-          style={{
-            marginVertical: 8,
-            paddingRight: 0,
-            borderRadius: 16,
-          }}
-          decorator={() => {
-            return tooltipPos.visible ? (
-              <View>
-                <Svg>
-                  <Rect
-                    x={tooltipPos.x - 15}
-                    y={tooltipPos.y + 10}
-                    width="40"
-                    height="30"
-                    fill="black"
-                  />
-                  <TextSVG
-                    x={tooltipPos.x + 5}
-                    y={tooltipPos.y + 30}
-                    fill="white"
-                    fontSize="16"
-                    fontWeight="bold"
-                    textAnchor="middle"
-                  >
-                    {tooltipPos.value.toFixed(2)}
-                  </TextSVG>
-                </Svg>
-              </View>
-            ) : null;
-          }}
-          onDataPointClick={(data) => {
-            let isSamePoint =
-              tooltipPos.x === data.x && tooltipPos.y === data.y;
-
-            isSamePoint
-              ? setTooltipPos((previousState) => {
-                  return {
-                    ...previousState,
-                    value: data.value,
-                    visible: !previousState.visible,
-                  };
-                })
-              : setTooltipPos({
-                  x: data.x,
-                  value: data.value,
-                  y: data.y,
-                  visible: true,
-                });
-          }}
+      <ScrollView>
+        <CoinDetailHeader
+          coinId={id}
+          image={small}
+          name={name}
+          symbol={symbol}
+          marketCapRank={market_cap_rank}
         />
-      </View>
-      <View style={{ flexDirection: "row" }}>
-        <View style={{ flexDirection: "row", flex: 1, alignItems: "center" }}>
-          <Text style={{ color: "white" }}>{symbol.toUpperCase()}</Text>
-          <TextInput
-            style={styles.input}
-            value={coinValue}
-            onChangeText={changeCoinValue}
-            keyboardType="numeric"
-          />
+        <View style={styles.priceContainer}>
+          <View>
+            <Text style={styles.name}>{name}</Text>
+            <Text style={styles.currentPrice}>
+              $
+              {tooltipPos.visible
+                ? tooltipPos.value.toFixed(2)
+                : current_price.usd}
+            </Text>
+          </View>
+          <View
+            style={{
+              backgroundColor: percentageColor,
+              paddingVertical: 8,
+              paddingHorizontal: 3,
+              borderRadius: 5,
+              flexDirection: "row",
+            }}
+          >
+            <AntDesign
+              name={price_change_percentage_24h < 0 ? "caretdown" : "caretup"}
+              size={12}
+              color="white"
+              style={{ alignSelf: "center", marginRight: 5 }}
+            />
+            <Text style={styles.priceChange}>
+              {price_change_percentage_24h.toFixed(2)}%
+            </Text>
+          </View>
         </View>
+        <View>
+          <LineChart
+            data={{
+              datasets: [
+                {
+                  data: prices.map((price) => price[1]),
+                },
+              ],
+            }}
+            width={Dimensions.get("window").width} // from react-native
+            height={250}
+            chartConfig={{
+              color: () =>
+                current_price.usd > prices[0][1] ? "#16c784" : "#ea3943",
+              propsForDots: {
+                r: "0",
+              },
+            }}
+            withHorizontalLabels={false}
+            withInnerLines={false}
+            bezier
+            style={{
+              marginVertical: 8,
+              paddingRight: 0,
+              borderRadius: 16,
+            }}
+            decorator={() => {
+              return tooltipPos.visible ? (
+                <View>
+                  <Svg>
+                    <Rect
+                      x={tooltipPos.x - 15}
+                      y={tooltipPos.y + 10}
+                      width="40"
+                      height="30"
+                      fill="black"
+                    />
+                    <TextSVG
+                      x={tooltipPos.x + 5}
+                      y={tooltipPos.y + 30}
+                      fill="white"
+                      fontSize="16"
+                      fontWeight="bold"
+                      textAnchor="middle"
+                    >
+                      {tooltipPos.value.toFixed(2)}
+                    </TextSVG>
+                  </Svg>
+                </View>
+              ) : null;
+            }}
+            onDataPointClick={(data) => {
+              let isSamePoint =
+                tooltipPos.x === data.x && tooltipPos.y === data.y;
 
-        <View style={{ flexDirection: "row", flex: 1, alignItems: "center" }}>
-          <Text style={{ color: "white" }}>USD</Text>
-          <TextInput
-            style={styles.input}
-            value={usdValue}
-            onChangeText={changeUsdValue}
-            keyboardType="numeric"
+              isSamePoint
+                ? setTooltipPos((previousState) => {
+                    return {
+                      ...previousState,
+                      value: data.value,
+                      visible: !previousState.visible,
+                    };
+                  })
+                : setTooltipPos({
+                    x: data.x,
+                    value: data.value,
+                    y: data.y,
+                    visible: true,
+                  });
+            }}
           />
         </View>
-      </View>
-      <View>
-        <CoinInformation description={en} />
-      </View>
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row", flex: 1, alignItems: "center" }}>
+            <Text style={{ color: "white" }}>{symbol.toUpperCase()}</Text>
+            <TextInput
+              style={styles.input}
+              value={coinValue}
+              onChangeText={changeCoinValue}
+              keyboardType="numeric"
+            />
+          </View>
+
+          <View style={{ flexDirection: "row", flex: 1, alignItems: "center" }}>
+            <Text style={{ color: "white" }}>USD</Text>
+            <TextInput
+              style={styles.input}
+              value={usdValue}
+              onChangeText={changeUsdValue}
+              keyboardType="numeric"
+            />
+          </View>
+        </View>
+        <View>
+          <CoinInformation description={en} />
+        </View>
+      </ScrollView>
     </View>
   );
 };
