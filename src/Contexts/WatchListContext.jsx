@@ -8,10 +8,10 @@ export const useWatchList = () => useContext(WatchListContext);
 const WatchListProvider = ({ children }) => {
   const [watchListCoinIds, setwatchListCoinIds] = useState([]);
 
-  const getWatchListData = () => {
+  const getWatchListData = async () => {
     try {
-        const jsonValue = await AsyncStorage.getItem("@watchlist_coins");
-        setwatchListCoinIds(jsonValue != null ? JSON.parse(jsonValue): []);
+      const jsonValue = await AsyncStorage.getItem("@watchlist_coins");
+      setwatchListCoinIds(jsonValue != null ? JSON.parse(jsonValue) : []);
     } catch (error) {
       console.log(error);
     }
@@ -20,8 +20,31 @@ const WatchListProvider = ({ children }) => {
   useEffect(() => {
     getWatchListData();
   }, []);
+
+  const storeWatchListCoinId = async (coinId) => {
+    try {
+      const newWatchList = [...watchListCoinIds, coinId];
+      const jsonValue = JSON.stringify(newWatchList);
+      await AsyncStorage.setItem("@watchlist_coins", jsonValue);
+      setwatchListCoinIds(newWatchList);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const removeWatchListCoinId = async (coinId) => {
+    const newWatchList = watchListCoinIds.filter(
+      (coinIdValue) => coinIdValue !== coinId
+    );
+    const jsonValue = JSON.stringify(newWatchList);
+    await AsyncStorage.setItem("@watchlist_coins", jsonValue);
+    setwatchListCoinIds(newWatchList);
+  };
+
   return (
-    <WatchListContext.Provider value={{ watchListCoinIds }}>
+    <WatchListContext.Provider
+      value={{ watchListCoinIds, storeWatchListCoinId, removeWatchListCoinId }}
+    >
       {children}
     </WatchListContext.Provider>
   );
