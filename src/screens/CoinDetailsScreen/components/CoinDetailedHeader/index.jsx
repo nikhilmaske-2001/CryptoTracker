@@ -34,9 +34,9 @@ const CoinDetailHeader = (props) => {
       </View>
 
       <FontAwesome
-        name={checkIfCoinIsWatchListed ? "star" : "star-o"}
+        name={checkIfCoinIsWatchListed() ? "star" : "star-o"}
         size={25}
-        color={checkIfCoinIsWatchListed ? "#FFBF00" : "white"}
+        color={checkIfCoinIsWatchListed() ? "#FFBF00" : "white"}
       />
     </View>
   );
