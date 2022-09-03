@@ -9,7 +9,7 @@ const WatchListScreen = () => {
     <View>
       <FlatList
         data={watchListCoinIds}
-        renderItem={({ item }) => <CoinItem marketCoin={item} />}
+        // renderItem={({ item }) => <CoinItem marketCoin={item} />}
       />
     </View>
   );

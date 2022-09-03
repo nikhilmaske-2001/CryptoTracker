@@ -8,10 +8,19 @@ import { useNavigation } from "@react-navigation/native";
 const CoinDetailHeader = (props) => {
   const { coinId, image, symbol, marketCapRank } = props;
   const navigation = useNavigation();
-  const { watchListCoinIds } = useWatchList();
+  const { watchListCoinIds, storeWatchListCoinId, removeWatchListCoinId } =
+    useWatchList();
 
   const checkIfCoinIsWatchListed = () =>
     watchListCoinIds.some((coinIdValue) => coinIdValue === coinId);
+
+  const handleWatchListCoin = () => {
+    if (checkIfCoinIsWatchListed()) {
+      return removeWatchListCoinId(coinId);
+    }
+    return storeWatchListCoinId(coinId);
+  };
+
   return (
     <View style={styles.headerContainer}>
       <Ionicons
@@ -37,6 +46,7 @@ const CoinDetailHeader = (props) => {
         name={checkIfCoinIsWatchListed() ? "star" : "star-o"}
         size={25}
         color={checkIfCoinIsWatchListed() ? "#FFBF00" : "white"}
+        onPress={handleWatchListCoin}
       />
     </View>
   );
